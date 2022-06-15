@@ -1,0 +1,76 @@
+﻿@model IEnumerable<MendzerWydatkow_v2.Models.ExpenseReport>
+
+@{
+    ViewBag.Title = "Statistics";
+}
+
+
+<div class="text-center">
+<h2 class="display-4">Podsumowanie twoich wydatków</h2>
+</div>
+
+<script>
+    window.onload = function () {
+        var Elektronika = "Elektronika";
+        var Transport = "Transport";
+        var Zdrowie = "Zdrowie";
+        var narzedzia = "Narzedzia";
+        var Jedzenie = "Jedzenie";
+        var Dom = "Dom";
+
+        var chart = new CanvasJS.Chart("chartContainer", {
+            animationEnabled: true,
+            theme: "light2", // "light1", "light2", "dark1", "dark2"
+            title: {
+                text: "Kwota wydana na poszczególne kategorie"
+            },
+            axisY: {
+                title: "Kwota [PLN]"
+            },
+            data: [{
+                type: "column",
+                showInLegend: true,
+                legendMarkerColor: "grey",
+                legendText: "KATEGORIA",
+                dataPoints: [
+
+                   @foreach (var item in Model)
+                   {
+                       @(" { y: " + @item.AmountSum +
+                        ", label: ")
+                    @Html.DisplayFor(modelItem => item.Category)
+                       @(" },")
+                   }
+
+
+                ]
+            }]
+        });
+        chart.render();
+
+    }
+</script>
+<div id="chartContainer" style="height: 300px; width: 100%;"></div>
+<script src="https://canvasjs.com/assets/script/canvasjs.min.js"></script>
+
+<table>
+    <tr>
+        <th>
+            Wydatki na poszczególne kategorie:
+        </th>
+
+    </tr>
+
+    @foreach (var item in Model)
+    {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.Category)
+            </td>
+            <td>
+                @item.AmountSum
+            </td>
+
+        </tr>
+    }
+</table>

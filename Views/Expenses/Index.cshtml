@@ -1,0 +1,77 @@
+﻿@model MendzerWydatkow_v2.Models.ExpenseCategory
+
+@{
+    ViewData["Title"] = "Index";
+}
+
+
+<div class="text-center">
+<h2 class="display-4"> Oto lista twoich wydatków </h2>
+</div>
+
+<p>
+    <a button type="button" class="btn btn-primary btn-lg" asp-action="Create">Nowy Wydatek</a>
+</p>
+<form asp-controller="Expenses" asp-action="Index">
+    <p>
+        <select asp-for="ExpCategory" asp-items="Model.Categories">
+            <option value="">All</option>
+        </select>
+        <input type="submit" value="Filtruj" />
+
+        Search: <input type="text" asp-for="SearchString" />
+        <input type="submit" value="Wyszukaj" />
+    </p>
+</form>
+
+<table class="table table-striped">
+    <thead>
+        <tr>
+            <th class="table-secondary">
+                @Html.DisplayNameFor(model => model.Expenses[0].Name)
+            </th>
+            <th class="table-secondary">
+                @Html.DisplayNameFor(model => model.Expenses[0].Description)
+            </th>
+            <th class="table-secondary">
+                @Html.DisplayNameFor(model => model.Expenses[0].Amount)
+            </th>
+            <th class="table-secondary">
+                @Html.DisplayNameFor(model => model.Expenses[0].Date)
+            </th>
+            <th class="table-secondary">
+                @Html.DisplayNameFor(model => model.Expenses[0].Category)
+            </th>
+
+            <th class="table-secondary"></th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model.Expenses)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Name)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Description)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Amount)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Date)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Category)
+                </td>
+
+                <td>
+                    <a button type="button" class="btn btn-warning" asp-action="Edit" asp-route-id="@item.ExpenseId">Edytuj</a> 
+                    <a button type="button" class="btn btn-primary" asp-action="Details" asp-route-id="@item.ExpenseId">Szczegóły</a> 
+                    <a button type="button" class="btn btn-danger" asp-action="Delete" asp-route-id="@item.ExpenseId">Usuń</a>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
